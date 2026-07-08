@@ -206,7 +206,7 @@ export function TradeTerminal() {
       </div>
 
       {/* Markets */}
-      <div className="rounded-lg border border-white/10 bg-[#101418]">
+      <div className="rounded-lg border border-white/10 bg-[#110e08]">
         <div className="border-b border-white/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
           Markets
         </div>
@@ -251,7 +251,7 @@ export function TradeTerminal() {
 
       {/* Chart + tabs */}
       <div className="flex flex-col gap-3">
-        <div className="rounded-lg border border-white/10 bg-[#101418] p-3">
+        <div className="rounded-lg border border-white/10 bg-[#110e08] p-3">
           {/* stats bar */}
           <div className="mb-3 flex flex-wrap items-center gap-x-6 gap-y-2">
             <div>
@@ -286,7 +286,7 @@ export function TradeTerminal() {
         </div>
 
         {/* tabbed panel */}
-        <div className="rounded-lg border border-white/10 bg-[#101418]">
+        <div className="rounded-lg border border-white/10 bg-[#110e08]">
           <div className="flex items-center gap-1 border-b border-white/10 px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider">
             {(
               [
@@ -469,7 +469,7 @@ export function TradeTerminal() {
 
       {/* Order panel */}
       <div className="flex flex-col gap-3">
-        <div className="rounded-lg border border-white/10 bg-[#101418] p-3">
+        <div className="rounded-lg border border-white/10 bg-[#110e08] p-3">
           {/* account summary */}
           <div className="mb-3 grid grid-cols-3 gap-2 rounded-md bg-black/30 p-2 text-center">
             <div>

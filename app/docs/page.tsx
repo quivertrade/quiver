@@ -42,10 +42,10 @@ function P({ children }: { children: React.ReactNode }) {
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-[#0b0e11] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-16">
-        <h1 className="text-3xl font-bold">Documentation</h1>
+        <h1 className="font-display text-4xl">Documentation</h1>
         <p className="mt-2 text-xs uppercase tracking-wider text-neutral-500">
           Quiver · perpetual futures on tokenized stocks
         </p>
@@ -149,7 +149,7 @@ export default function DocsPage() {
         </ol>
 
         <H2>7. Network</H2>
-        <div className="mt-3 rounded-xl border border-white/10 bg-[#101418] p-4 text-[13px]">
+        <div className="mt-3 rounded-xl border border-white/10 bg-[#110e08] p-4 text-[13px]">
           <Row label="Network" value={CHAIN.name} />
           <Row label="Chain ID" value={`${CHAIN.chainId}`} />
           <Row label="RPC" value={CHAIN.rpc} />

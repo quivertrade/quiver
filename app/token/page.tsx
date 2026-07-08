@@ -70,13 +70,13 @@ const BADGE: Record<string, string> = {
 
 export default function TokenPage() {
   return (
-    <div className="min-h-screen bg-[#0b0e11] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-16">
         <span className="rounded-full border border-lime-400/30 bg-lime-400/10 px-3 py-1 text-[11px] font-medium text-lime-300">
           Planned — not live yet
         </span>
-        <h1 className="mt-5 text-3xl font-bold">
+        <h1 className="font-display mt-5 text-4xl">
           The <span className="text-lime-300">$QVR</span> token
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-neutral-400">
@@ -101,7 +101,7 @@ export default function TokenPage() {
           {UTILITY.map((u) => (
             <div
               key={u.title}
-              className="rounded-lg border border-white/10 bg-[#101418] p-5"
+              className="rounded-lg border border-white/10 bg-[#110e08] p-5"
             >
               <h3 className="text-sm font-semibold text-lime-300">{u.title}</h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-400">
@@ -112,7 +112,7 @@ export default function TokenPage() {
         </div>
 
         <h2 className="mt-12 text-lg font-bold">Allocation</h2>
-        <div className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-[#101418] p-5">
+        <div className="mt-4 overflow-hidden rounded-xl border border-white/10 bg-[#110e08] p-5">
           <div className="flex h-3 w-full overflow-hidden rounded-full">
             {ALLOCATION.map((a) => (
               <div
@@ -142,7 +142,7 @@ export default function TokenPage() {
           {LAUNCH_STEPS.map((s) => (
             <div
               key={s.tag}
-              className="rounded-xl border border-white/10 bg-[#101418] p-5"
+              className="rounded-xl border border-white/10 bg-[#110e08] p-5"
             >
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-500">

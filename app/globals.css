@@ -12,6 +12,20 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Robinhood palette: pure black, neon chartreuse #CCFF00 */
+@theme {
+  --color-lime-200: #e4ff66;
+  --color-lime-300: #ccff00;
+  --color-lime-400: #ccff00;
+  --color-lime-500: #b8e600;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

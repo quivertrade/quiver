@@ -4,7 +4,7 @@ import { ConnectButton } from "./ConnectButton";
 
 export function Nav() {
   return (
-    <nav className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 bg-[#0b0e11]/90 px-6 py-3 backdrop-blur">
+    <nav className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 bg-[#000000]/90 px-6 py-3 backdrop-blur">
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-2">
           <Image

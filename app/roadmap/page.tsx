@@ -64,10 +64,10 @@ const BADGE: Record<string, string> = {
 
 export default function RoadmapPage() {
   return (
-    <div className="min-h-screen bg-[#0b0e11] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-16">
-        <h1 className="text-3xl font-bold">Roadmap</h1>
+        <h1 className="font-display text-4xl">Roadmap</h1>
         <p className="mt-2 text-xs uppercase tracking-wider text-neutral-500">
           From demo to on-chain tokenized-stock perps
         </p>
@@ -76,7 +76,7 @@ export default function RoadmapPage() {
           {PHASES.map((p) => (
             <div
               key={p.tag}
-              className="rounded-xl border border-white/10 bg-[#101418] p-5"
+              className="rounded-xl border border-white/10 bg-[#110e08] p-5"
             >
               <div className="flex items-center gap-3">
                 <span className="font-mono text-[11px] uppercase tracking-wider text-neutral-500">

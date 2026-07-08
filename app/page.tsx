@@ -53,14 +53,14 @@ const FAQ = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0b0e11] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <Nav />
 
       <section className="mx-auto max-w-5xl px-6 pb-20 pt-24 text-center">
         <span className="rounded-full border border-lime-400/30 bg-lime-400/10 px-3 py-1 text-[11px] font-medium text-lime-300">
           Live on Robinhood Chain Testnet
         </span>
-        <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-tight sm:text-6xl">
+        <h1 className="font-display mx-auto mt-6 max-w-3xl text-5xl leading-tight sm:text-7xl">
           Perpetual futures on{" "}
           <span className="text-lime-300">tokenized stocks</span>
         </h1>
@@ -94,7 +94,7 @@ export default function Home() {
 
         <div className="mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/5 sm:grid-cols-4">
           {HERO_STATS.map((s) => (
-            <div key={s.label} className="bg-[#0b0e11] px-4 py-5">
+            <div key={s.label} className="bg-[#000000] px-4 py-5">
               <div className="font-mono text-lg font-bold text-white">
                 {s.value}
               </div>
@@ -165,7 +165,7 @@ export default function Home() {
         {FEATURES.map((f) => (
           <div
             key={f.title}
-            className="rounded-lg border border-white/10 bg-[#101418] p-5"
+            className="rounded-lg border border-white/10 bg-[#110e08] p-5"
           >
             <h3 className="text-sm font-semibold text-lime-300">{f.title}</h3>
             <p className="mt-2 text-xs leading-relaxed text-neutral-400">
@@ -181,7 +181,7 @@ export default function Home() {
           {FAQ.map((f) => (
             <div
               key={f.q}
-              className="rounded-lg border border-white/10 bg-[#101418] p-5"
+              className="rounded-lg border border-white/10 bg-[#110e08] p-5"
             >
               <h3 className="text-sm font-semibold text-white">{f.q}</h3>
               <p className="mt-2 text-xs leading-relaxed text-neutral-400">

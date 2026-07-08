@@ -49,8 +49,8 @@ export function Chart({ candles, mark }: { candles: Candle[]; mark?: number }) {
     candles.forEach((c, i) => {
       const x = i * cw + cw / 2;
       const up = c.c >= c.o;
-      ctx.strokeStyle = up ? "#a3e635" : "#f87171";
-      ctx.fillStyle = up ? "#a3e635" : "#f87171";
+      ctx.strokeStyle = up ? "#ccff00" : "#f87171";
+      ctx.fillStyle = up ? "#ccff00" : "#f87171";
       ctx.beginPath();
       ctx.moveTo(x, y(c.h));
       ctx.lineTo(x, y(c.l));
@@ -63,7 +63,7 @@ export function Chart({ candles, mark }: { candles: Candle[]; mark?: number }) {
     // live mark price line
     if (mark != null) {
       const my = y(mark);
-      ctx.strokeStyle = "rgba(163,230,53,0.6)";
+      ctx.strokeStyle = "rgba(204,255,0,0.6)";
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 3]);
       ctx.beginPath();
@@ -72,9 +72,9 @@ export function Chart({ candles, mark }: { candles: Candle[]; mark?: number }) {
       ctx.stroke();
       ctx.setLineDash([]);
       // price tag
-      ctx.fillStyle = "#a3e635";
+      ctx.fillStyle = "#ccff00";
       ctx.fillRect(plotW, my - 8, axis, 16);
-      ctx.fillStyle = "#0b0e11";
+      ctx.fillStyle = "#000000";
       ctx.fillText(mark.toFixed(2), plotW + 5, my);
     }
   }, [candles, mark]);

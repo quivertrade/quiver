@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 export default function RiskPage() {
   return (
-    <div className="min-h-screen bg-[#0b0e11] text-white">
+    <div className="min-h-screen bg-[#000000] text-white">
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-16">
-        <h1 className="text-3xl font-bold">Risk Disclaimer</h1>
+        <h1 className="font-display text-4xl">Risk Disclaimer</h1>
         <div className="mt-6 space-y-4 text-sm leading-relaxed text-neutral-400">
           <p>
             Quiver is an experimental <strong className="text-neutral-200">testnet demo</strong>.
