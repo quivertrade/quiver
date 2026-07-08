@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://quiver-pi-nine.vercel.app"),
   title: "Quiver — Tokenized Stock Perps on Robinhood Chain",
   description:
     "Perpetual futures on tokenized stocks. Long or short AAPL, TSLA, NVDA and more with leverage — on Robinhood Chain testnet.",

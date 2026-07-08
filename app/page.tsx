@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
+import { Footer } from "@/components/Footer";
 import { MARKETS, dayStats, fmtCompact } from "@/lib/markets";
 
 const HERO_STATS = [
@@ -28,6 +29,25 @@ const FEATURES = [
   {
     title: "Built on Robinhood Chain",
     body: "An Arbitrum Orbit L2 purpose-built for tokenized real-world assets. Testnet chain ID 46630.",
+  },
+];
+
+const FAQ = [
+  {
+    q: "Is this real money?",
+    a: "No — Quiver is a testnet demo. Balances, positions and PnL are simulated and have no monetary value.",
+  },
+  {
+    q: "Are these real stocks?",
+    a: "No. Markets are perpetual futures on tokenized-stock index prices — you never hold the underlying equity.",
+  },
+  {
+    q: "When do contracts go live?",
+    a: "The vAMM perp contracts are being ported to Robinhood Chain testnet. See the roadmap for status.",
+  },
+  {
+    q: "What wallet do I need?",
+    a: "Any EVM wallet (e.g. MetaMask) configured for Robinhood Chain Testnet, chain ID 46630.",
   },
 ];
 
@@ -64,6 +84,12 @@ export default function Home() {
           >
             Testnet Explorer
           </a>
+          <Link
+            href="/docs"
+            className="rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-neutral-300 hover:bg-white/5"
+          >
+            Read the Docs
+          </Link>
         </div>
 
         <div className="mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/5 sm:grid-cols-4">
@@ -149,20 +175,31 @@ export default function Home() {
         ))}
       </section>
 
-      <footer className="border-t border-white/10 px-6 py-8 text-center text-[11px] text-neutral-600">
-        <a
-          href="https://x.com/_Quivertrade"
-          target="_blank"
-          rel="noreferrer"
-          className="text-neutral-400 hover:text-lime-300"
-        >
-          Follow @_Quivertrade on X
-        </a>
-        <div className="mt-2">
-          Quiver — testnet demo. Not affiliated with Robinhood Markets, Inc.
-          Nothing here is financial advice.
+      <section className="mx-auto max-w-3xl px-6 pb-24">
+        <h2 className="text-center text-2xl font-bold">FAQ</h2>
+        <div className="mt-8 space-y-3">
+          {FAQ.map((f) => (
+            <div
+              key={f.q}
+              className="rounded-lg border border-white/10 bg-[#101418] p-5"
+            >
+              <h3 className="text-sm font-semibold text-white">{f.q}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-neutral-400">
+                {f.a}
+              </p>
+            </div>
+          ))}
         </div>
-      </footer>
+        <div className="mt-6 text-center text-xs text-neutral-500">
+          More detail in the{" "}
+          <Link href="/docs" className="text-lime-300 hover:underline">
+            documentation
+          </Link>
+          .
+        </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }

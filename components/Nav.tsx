@@ -22,6 +22,12 @@ export function Nav() {
           <Link href="/trade" className="hover:text-white">
             Trade
           </Link>
+          <Link href="/docs" className="hover:text-white">
+            Docs
+          </Link>
+          <Link href="/roadmap" className="hover:text-white">
+            Roadmap
+          </Link>
           <a
             href="https://explorer.testnet.chain.robinhood.com"
             target="_blank"
