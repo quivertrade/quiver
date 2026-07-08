@@ -6,7 +6,7 @@
 
 **Perpetual futures on tokenized stocks — on [Robinhood Chain](https://explorer.testnet.chain.robinhood.com).**
 
-🔗 Live demo: **https://quiver-pi-nine.vercel.app**
+🔗 Live demo: **https://quiver-pi-nine.vercel.app**  ·  𝕏 [@_Quivertrade](https://x.com/_Quivertrade)
 
 Long or short AAPL, TSLA, NVDA, MSFT, AMZN and HOOD with up to 20x leverage, 24/7. Quiver is a vAMM (x·y=k) perpetuals exchange targeting Robinhood Chain Testnet (chain ID 46630).
 

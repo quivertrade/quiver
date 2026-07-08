@@ -30,6 +30,14 @@ export function Nav() {
           >
             Explorer
           </a>
+          <a
+            href="https://x.com/_Quivertrade"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white"
+          >
+            X
+          </a>
         </div>
       </div>
       <div className="flex items-center gap-3">

@@ -105,8 +105,18 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-white/10 px-6 py-8 text-center text-[11px] text-neutral-600">
-        Quiver — testnet demo. Not affiliated with Robinhood Markets, Inc.
-        Nothing here is financial advice.
+        <a
+          href="https://x.com/_Quivertrade"
+          target="_blank"
+          rel="noreferrer"
+          className="text-neutral-400 hover:text-lime-300"
+        >
+          Follow @_Quivertrade on X
+        </a>
+        <div className="mt-2">
+          Quiver — testnet demo. Not affiliated with Robinhood Markets, Inc.
+          Nothing here is financial advice.
+        </div>
       </footer>
     </div>
   );
