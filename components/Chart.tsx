@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import type { Candle } from "@/lib/markets";
 
-export function Chart({ candles }: { candles: Candle[] }) {
+export function Chart({ candles, mark }: { candles: Candle[]; mark?: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -19,20 +19,31 @@ export function Chart({ candles }: { candles: Candle[] }) {
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, w, h);
 
-    const lo = Math.min(...candles.map((c) => c.l));
-    const hi = Math.max(...candles.map((c) => c.h));
-    const pad = (hi - lo) * 0.08;
-    const y = (v: number) => h - ((v - lo + pad) / (hi - lo + 2 * pad)) * h;
-    const cw = w / candles.length;
+    const axis = 52; // right price axis width
+    const plotW = w - axis;
 
-    // gridlines
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
-    ctx.lineWidth = 1;
-    for (let i = 1; i < 5; i++) {
+    const values = candles.flatMap((c) => [c.h, c.l]);
+    if (mark != null) values.push(mark);
+    const lo = Math.min(...values);
+    const hi = Math.max(...values);
+    const pad = (hi - lo) * 0.08 || 1;
+    const y = (v: number) => h - ((v - lo + pad) / (hi - lo + 2 * pad)) * h;
+    const cw = plotW / candles.length;
+
+    // gridlines + price labels
+    ctx.font = "10px ui-monospace, monospace";
+    ctx.textBaseline = "middle";
+    for (let i = 0; i <= 4; i++) {
+      const gy = (h / 4) * i;
+      ctx.strokeStyle = "rgba(255,255,255,0.05)";
+      ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(0, (h / 5) * i);
-      ctx.lineTo(w, (h / 5) * i);
+      ctx.moveTo(0, gy);
+      ctx.lineTo(plotW, gy);
       ctx.stroke();
+      const val = lo - pad + (hi - lo + 2 * pad) * (1 - i / 4);
+      ctx.fillStyle = "rgba(255,255,255,0.35)";
+      ctx.fillText(val.toFixed(2), plotW + 6, Math.min(h - 6, Math.max(6, gy)));
     }
 
     candles.forEach((c, i) => {
@@ -48,7 +59,25 @@ export function Chart({ candles }: { candles: Candle[] }) {
       const bodyH = Math.max(1, Math.abs(y(c.o) - y(c.c)));
       ctx.fillRect(x - cw * 0.3, bodyTop, cw * 0.6, bodyH);
     });
-  }, [candles]);
+
+    // live mark price line
+    if (mark != null) {
+      const my = y(mark);
+      ctx.strokeStyle = "rgba(163,230,53,0.6)";
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(0, my);
+      ctx.lineTo(plotW, my);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      // price tag
+      ctx.fillStyle = "#a3e635";
+      ctx.fillRect(plotW, my - 8, axis, 16);
+      ctx.fillStyle = "#0b0e11";
+      ctx.fillText(mark.toFixed(2), plotW + 5, my);
+    }
+  }, [candles, mark]);
 
   return <canvas ref={ref} className="h-full w-full" />;
 }

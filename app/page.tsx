@@ -1,6 +1,16 @@
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
-import { MARKETS } from "@/lib/markets";
+import { MARKETS, dayStats, fmtCompact } from "@/lib/markets";
+
+const HERO_STATS = [
+  { label: "Markets", value: `${MARKETS.length}` },
+  { label: "Max leverage", value: "20x" },
+  {
+    label: "24h volume (demo)",
+    value: `$${fmtCompact(MARKETS.reduce((s, m) => s + dayStats(m, m.basePrice).volume, 0))}`,
+  },
+  { label: "Network", value: "Robinhood Chain" },
+];
 
 const FEATURES = [
   {
@@ -55,6 +65,19 @@ export default function Home() {
             Testnet Explorer
           </a>
         </div>
+
+        <div className="mx-auto mt-14 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-xl border border-white/10 bg-white/5 sm:grid-cols-4">
+          {HERO_STATS.map((s) => (
+            <div key={s.label} className="bg-[#0b0e11] px-4 py-5">
+              <div className="font-mono text-lg font-bold text-white">
+                {s.value}
+              </div>
+              <div className="mt-1 text-[10px] uppercase tracking-wider text-neutral-500">
+                {s.label}
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-6 pb-16">
@@ -65,26 +88,48 @@ export default function Home() {
                 <th className="px-4 py-3">Market</th>
                 <th className="px-4 py-3">Underlying</th>
                 <th className="px-4 py-3 text-right">Index (demo)</th>
+                <th className="px-4 py-3 text-right">24h</th>
                 <th className="px-4 py-3 text-right">Max lev.</th>
+                <th className="px-4 py-3 text-right" />
               </tr>
             </thead>
             <tbody className="font-mono text-xs">
-              {MARKETS.map((m) => (
-                <tr key={m.key} className="border-t border-white/5">
-                  <td className="px-4 py-3">
-                    <span
-                      className="mr-2 inline-block h-2 w-2 rounded-full"
-                      style={{ background: m.color }}
-                    />
-                    <span className="text-white">{m.label}</span>
-                  </td>
-                  <td className="px-4 py-3 text-neutral-400">{m.name}</td>
-                  <td className="px-4 py-3 text-right text-neutral-200">
-                    ${m.basePrice.toFixed(2)}
-                  </td>
-                  <td className="px-4 py-3 text-right text-lime-300">20x</td>
-                </tr>
-              ))}
+              {MARKETS.map((m) => {
+                const chg = dayStats(m, m.basePrice).changePct;
+                return (
+                  <tr
+                    key={m.key}
+                    className="border-t border-white/5 hover:bg-white/5"
+                  >
+                    <td className="px-4 py-3">
+                      <span
+                        className="mr-2 inline-block h-2 w-2 rounded-full"
+                        style={{ background: m.color }}
+                      />
+                      <span className="text-white">{m.label}</span>
+                    </td>
+                    <td className="px-4 py-3 text-neutral-400">{m.name}</td>
+                    <td className="px-4 py-3 text-right text-neutral-200">
+                      ${m.basePrice.toFixed(2)}
+                    </td>
+                    <td
+                      className={`px-4 py-3 text-right ${chg >= 0 ? "text-lime-300" : "text-red-400"}`}
+                    >
+                      {chg >= 0 ? "+" : ""}
+                      {chg.toFixed(2)}%
+                    </td>
+                    <td className="px-4 py-3 text-right text-lime-300">20x</td>
+                    <td className="px-4 py-3 text-right">
+                      <Link
+                        href="/trade"
+                        className="rounded-full border border-white/15 px-3 py-1 text-[11px] text-neutral-300 hover:bg-white/10"
+                      >
+                        Trade
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
