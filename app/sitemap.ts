@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE = "https://quiver-pi-nine.vercel.app";
+const BASE = "https://quiver-trade.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return ["", "/trade", "/docs", "/roadmap", "/token", "/risk"].map((p) => ({
