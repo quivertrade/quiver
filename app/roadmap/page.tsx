@@ -44,10 +44,13 @@ const PHASES = [
   },
   {
     tag: "Phase 3",
-    title: "Mainnet",
+    title: "Mainnet & $QVR token launch",
     status: "planned" as const,
     items: [
       "Launch on Robinhood Chain mainnet alongside tokenized-stock availability",
+      "Token generation event: $QVR with fixed 1B supply",
+      "Airdrop to early testnet traders via points program",
+      "Staking, fee discounts & governance go live",
       "More markets, cross-margin research, mobile-first terminal",
     ],
   },

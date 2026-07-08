@@ -28,6 +28,9 @@ export function Nav() {
           <Link href="/roadmap" className="hover:text-white">
             Roadmap
           </Link>
+          <Link href="/token" className="hover:text-white">
+            Token
+          </Link>
           <a
             href="https://explorer.testnet.chain.robinhood.com"
             target="_blank"

@@ -14,6 +14,9 @@ export function Footer() {
           <Link href="/roadmap" className="hover:text-lime-300">
             Roadmap
           </Link>
+          <Link href="/token" className="hover:text-lime-300">
+            Token
+          </Link>
           <Link href="/risk" className="hover:text-lime-300">
             Risk
           </Link>
