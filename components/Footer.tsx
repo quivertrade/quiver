@@ -18,6 +18,9 @@ export function Footer() {
           <Link href="/token" className="hover:text-lime-300">
             Token
           </Link>
+          <Link href="/leaderboard" className="hover:text-lime-300">
+            Points
+          </Link>
           <Link href="/risk" className="hover:text-lime-300">
             Risk
           </Link>

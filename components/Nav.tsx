@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/docs", label: "Docs" },
   { href: "/roadmap", label: "Roadmap" },
   { href: "/token", label: "Token" },
+  { href: "/leaderboard", label: "Points" },
 ];
 
 const EXTERNAL = [

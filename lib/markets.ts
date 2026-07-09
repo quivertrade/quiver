@@ -163,6 +163,32 @@ export interface Order {
   sl?: number;
 }
 
+export interface ClosedTrade {
+  id: number;
+  market: MarketKey;
+  side: "long" | "short";
+  size: number;
+  leverage: number;
+  entry: number;
+  exit: number;
+  pnl: number;
+  reason: string;
+  t: number;
+}
+
+export interface PriceAlert {
+  id: number;
+  market: MarketKey;
+  price: number;
+  dir: "above" | "below";
+}
+
+/** Points: 1 pt per $100 notional traded, 20% bonus on profitable closes. */
+export function pointsFor(size: number, realizedPnl = 0): number {
+  const base = size / 100;
+  return realizedPnl > 0 ? base * 1.2 : base;
+}
+
 export interface Trade {
   price: number;
   size: number;
