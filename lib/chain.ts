@@ -1,6 +1,9 @@
 import { defineChain } from "viem";
 import { http, cookieStorage, createConfig, createStorage } from "wagmi";
-import { injected } from "wagmi/connectors";
+import { coinbaseWallet, injected, walletConnect } from "wagmi/connectors";
+
+// WalletConnect project IDs are public client-side identifiers
+const WC_PROJECT_ID = "5b19f871c181a89b72c971a10482913e";
 
 export const robinhoodChainTestnet = defineChain({
   id: 46630,
@@ -36,7 +39,20 @@ export const robinhoodChain = defineChain({
 export function getConfig() {
   return createConfig({
     chains: [robinhoodChainTestnet, robinhoodChain],
-    connectors: [injected()],
+    connectors: [
+      injected(),
+      walletConnect({
+        projectId: WC_PROJECT_ID,
+        metadata: {
+          name: "Quiver",
+          description: "Perpetual futures on tokenized stocks",
+          url: "https://quiver-trade.com",
+          icons: ["https://quiver-trade.com/brand/icon-192.png"],
+        },
+        showQrModal: true,
+      }),
+      coinbaseWallet({ appName: "Quiver", appLogoUrl: "https://quiver-trade.com/brand/icon-192.png" }),
+    ],
     storage: createStorage({ storage: cookieStorage }),
     ssr: true,
     transports: {
