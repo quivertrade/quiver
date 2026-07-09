@@ -373,6 +373,7 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
   };
 
   const open = () => {
+    if (!isConnected) return toast("warn", "Connect a wallet to trade");
     if (marginNum <= 0) return toast("warn", "Enter a margin amount");
     if (marginNum > balance) return toast("warn", "Insufficient balance");
     const tpNum = tpEnabled ? Number(tp) : undefined;
@@ -1128,20 +1129,21 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
 
           <button
             onClick={open}
-            disabled={marginNum <= 0 || marginNum > balance}
+            disabled={!isConnected || marginNum <= 0 || marginNum > balance}
             className={`w-full rounded-md py-2.5 text-sm font-bold disabled:opacity-40 ${
               side === "long"
                 ? "bg-lime-400 text-black hover:bg-lime-300"
                 : "bg-red-500 text-white hover:bg-red-400"
             }`}
           >
-            {orderType === "limit" ? "Place Limit " : ""}
-            {side === "long" ? "Long" : "Short"} {market.label}
+            {!isConnected
+              ? "Connect wallet to trade"
+              : `${orderType === "limit" ? "Place Limit " : ""}${side === "long" ? "Long" : "Short"} ${market.label}`}
           </button>
           {!isConnected && (
             <p className="mt-2 text-center text-[10px] text-neutral-600">
-              Demo mode — connect a wallet on Robinhood Chain Testnet to trade
-              on-chain via the vAMM contract.
+              Connect a wallet on Robinhood Chain Testnet (top right) to unlock
+              trading — demo terminal and on-chain vAMM trading.
             </p>
           )}
         </div>
