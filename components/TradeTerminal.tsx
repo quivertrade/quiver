@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
+import { OnchainVault } from "@/components/OnchainVault";
 import {
   MARKETS,
   TIMEFRAMES,
@@ -1139,11 +1140,14 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
           </button>
           {!isConnected && (
             <p className="mt-2 text-center text-[10px] text-neutral-600">
-              Demo mode — connect a wallet on Robinhood Chain Testnet for the
-              on-chain flow (contracts coming soon).
+              Demo mode — connect a wallet on Robinhood Chain Testnet to use
+              the on-chain tUSDC faucet &amp; vault.
             </p>
           )}
         </div>
+
+        {/* On-chain vault (live contracts on Robinhood testnet) */}
+        <OnchainVault onToast={toast} />
 
         {/* Price alerts */}
         <div className="rounded-lg border border-white/10 bg-[#110e08] p-3">

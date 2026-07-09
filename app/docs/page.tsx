@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { MARKETS } from "@/lib/markets";
+import { TEST_USDC_ADDRESS, QUIVER_VAULT_ADDRESS } from "@/lib/contracts";
 
 export const metadata: Metadata = {
   title: "Docs — Quiver",
@@ -135,7 +136,8 @@ export default function DocsPage() {
           </li>
           <li>
             Optionally connect a wallet on {CHAIN.name} (chain ID{" "}
-            {CHAIN.chainId}) for the upcoming on-chain flow.
+            {CHAIN.chainId}) to use the live on-chain tUSDC faucet and vault
+            (deposit / withdraw real testnet transactions).
           </li>
           <li>
             Pick a market, choose <strong className="text-neutral-200">Long</strong>{" "}
@@ -155,6 +157,16 @@ export default function DocsPage() {
           <Row label="RPC" value={CHAIN.rpc} />
           <Row label="Explorer" value={CHAIN.explorer} href={CHAIN.explorer} />
           <Row label="Markets" value={MARKETS.map((m) => m.label).join(", ")} />
+          <Row
+            label="tUSDC"
+            value={TEST_USDC_ADDRESS}
+            href={`${CHAIN.explorer}/address/${TEST_USDC_ADDRESS}`}
+          />
+          <Row
+            label="Vault"
+            value={QUIVER_VAULT_ADDRESS}
+            href={`${CHAIN.explorer}/address/${QUIVER_VAULT_ADDRESS}`}
+          />
         </div>
 
         <H2>8. FAQ</H2>
