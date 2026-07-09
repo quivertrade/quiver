@@ -159,7 +159,7 @@ export default async function Home() {
 
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-4 pt-4">
-        <div className="border border-dashed border-black/25 px-6 pb-8 pt-16 sm:pt-24">
+        <div className="px-6 pb-8 pt-16 sm:pt-24">
           <div className="text-center">
             <div className="text-sm">
               🏹 <strong>Robinhood</strong> Chain
@@ -204,14 +204,6 @@ export default async function Home() {
 
           {/* Lime stats panel */}
           <div className="relative overflow-hidden bg-gradient-to-br from-lime-300 via-[#d8ff33] to-[#9fc700]">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 opacity-[0.16]"
-              style={{
-                backgroundImage:
-                  "repeating-linear-gradient(0deg, transparent, transparent 22px, #1a2500 22px, #1a2500 23px), repeating-linear-gradient(90deg, transparent, transparent 22px, #1a2500 22px, #1a2500 23px)",
-              }}
-            />
             <div className="relative grid grid-cols-2 gap-px sm:grid-cols-4">
               {[
                 { label: "Markets", value: `${MARKETS.length}` },
@@ -261,7 +253,7 @@ export default async function Home() {
 
       {/* Solution — light section */}
       <section className="mx-auto max-w-6xl px-4 py-6">
-        <div className="border border-dashed border-black/25 px-6 py-16 sm:px-10">
+        <div className="px-6 py-16 sm:px-10">
           <h2 className="font-display mx-auto max-w-3xl text-center text-3xl leading-snug sm:text-4xl">
             Open a leveraged position on a tokenized stock in one transaction
           </h2>
@@ -407,7 +399,7 @@ export default async function Home() {
 
       {/* FAQ — light */}
       <section className="mx-auto max-w-6xl px-4 py-6">
-        <div className="border border-dashed border-black/25 px-6 py-16 sm:px-10">
+        <div className="px-6 py-16 sm:px-10">
           <h2 className="font-display text-3xl sm:text-4xl">
             Have questions? Find answers.
           </h2>
