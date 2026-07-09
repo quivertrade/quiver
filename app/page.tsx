@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Nav } from "@/components/Nav";
+import Image from "next/image";
 import { Footer } from "@/components/Footer";
 import { MARKETS, dayStats, fmtCompact } from "@/lib/markets";
 
@@ -37,51 +37,49 @@ async function fetchQuotes(): Promise<Partial<Record<string, LandingQuote>>> {
   return out;
 }
 
-const HERO_STATS = [
-  { label: "Markets", value: `${MARKETS.length}` },
-  { label: "Max leverage", value: "20x" },
-  {
-    label: "24h index volume",
-    value: `$${fmtCompact(MARKETS.reduce((s, m) => s + dayStats(m, m.basePrice).volume, 0))}`,
-  },
-  { label: "Network", value: "Robinhood Chain" },
+const NAV_LINKS = [
+  { href: "/trade", label: "Trade" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/docs", label: "Docs" },
+  { href: "/roadmap", label: "Roadmap" },
+  { href: "/token", label: "Token" },
+  { href: "/leaderboard", label: "Points" },
 ];
 
-const FEATURES = [
+const PROBLEMS = [
   {
-    n: "01",
-    title: "Tokenized stock perps",
-    body: "Long or short AAPL, TSLA, NVDA and more with up to 20x leverage — 24/7, no market hours.",
+    title: "Markets close at 4pm",
+    body: "Stock exchanges shut down nights, weekends and holidays. News never does — price gaps happen while you can't act.",
   },
   {
-    n: "02",
-    title: "vAMM price discovery",
-    body: "Virtual AMM (x·y=k) marks every trade on-chain. PnL settles against an external index price.",
+    title: "No easy way to short",
+    body: "Shorting equities means margin accounts, borrow fees and locate requirements. Most retail traders simply can't.",
   },
   {
-    n: "03",
-    title: "Isolated margin",
-    body: "Risk is contained per market. A per-market insurance fund backstops bad debt.",
+    title: "Leverage is gated",
+    body: "Meaningful leverage on stocks is reserved for institutions and prime brokers — not for the average trader.",
   },
   {
-    n: "04",
-    title: "Built on Robinhood Chain",
-    body: "An Arbitrum Orbit L2 purpose-built for tokenized real-world assets. Testnet chain ID 46630.",
+    title: "Settlement is slow",
+    body: "Traditional equity trades settle T+1 through layers of intermediaries. Nothing about it is programmable.",
   },
 ];
 
-const STEPS = [
+const HOW = [
   {
-    title: "Connect",
-    body: "Any EVM wallet on Robinhood Chain Testnet (chain ID 46630).",
+    tag: "Connect",
+    title: "Any EVM wallet",
+    body: "Connect on Robinhood Chain Testnet (chain ID 46630) and mint free tUSDC collateral from the faucet.",
   },
   {
-    title: "Pick a market",
-    body: "Six tokenized-stock perps with real live index price feeds.",
+    tag: "Pick a market",
+    title: "Six tokenized-stock perps",
+    body: "AAPL, TSLA, NVDA, MSFT, AMZN and HOOD — anchored to real live index price feeds.",
   },
   {
-    title: "Trade",
-    body: "Set margin and leverage, go long or short — market or limit, with TP/SL.",
+    tag: "Trade",
+    title: "Long or short, up to 20x",
+    body: "Set margin and leverage, open on-chain against the vAMM. PnL settles in tUSDC when you close.",
   },
 ];
 
@@ -104,235 +102,320 @@ const FAQ = [
   },
 ];
 
+function Arrow() {
+  return <span className="mr-3 text-black">→</span>;
+}
+
 export default async function Home() {
   const quotes = await fetchQuotes();
+  const volume = `$${fmtCompact(MARKETS.reduce((s, m) => s + dayStats(m, m.basePrice).volume, 0))}`;
   return (
-    <div className="min-h-screen bg-[#000000] text-white">
-      <Nav />
+    <div className="min-h-screen bg-white text-black">
+      {/* Announcement bar */}
+      <Link
+        href="/trade"
+        className="block bg-black py-2.5 text-center text-[13px] text-white transition hover:text-lime-300"
+      >
+        Perps on tokenized equities — live on Robinhood Chain Testnet. ⇢
+      </Link>
 
-      <section className="relative overflow-hidden">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-180px] h-[420px] w-[720px] -translate-x-1/2 rounded-full bg-lime-400/10 blur-[120px]"
-        />
-        <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-24 text-center sm:pt-28">
-          <span className="inline-flex items-center gap-2 rounded-full border border-lime-400/30 bg-lime-400/10 px-3.5 py-1.5 text-[11px] font-medium text-lime-300">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime-300 opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-lime-300" />
+      {/* Light nav */}
+      <header className="border-b border-black/10 bg-white">
+        <div className="mx-auto flex max-w-6xl items-center gap-8 px-6 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/brand/quiver-logo.png"
+              alt="Quiver"
+              width={28}
+              height={28}
+              className="rounded-full"
+            />
+            <span className="font-display text-xl font-semibold tracking-tight">
+              Quiver
             </span>
-            Live on Robinhood Chain Testnet
-          </span>
-          <h1 className="font-display mx-auto mt-7 max-w-3xl text-5xl leading-[1.05] sm:text-7xl">
-            Perpetual futures on{" "}
-            <span className="text-lime-300 italic">tokenized stocks</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-neutral-400 sm:text-base">
-            Trade equities like crypto — leveraged, permissionless, and always
-            open. Quiver is a vAMM perpetuals exchange on Robinhood Chain, the
-            L2 built for real-world assets.
-          </p>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          </Link>
+          <nav className="hidden items-center gap-6 text-sm text-neutral-600 md:flex">
+            {NAV_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="hover:text-black">
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+          <div className="ml-auto flex items-center gap-3">
+            <span className="hidden items-center gap-2 rounded-md border border-black/10 px-3 py-2 text-xs font-bold sm:flex">
+              <span className="h-1.5 w-1.5 rounded-full bg-lime-500" />
+              $QVR
+              <span className="font-normal text-neutral-500">testnet</span>
+            </span>
             <Link
               href="/trade"
-              className="rounded-full bg-lime-400 px-7 py-3 text-sm font-bold text-black shadow-[0_0_30px_rgba(204,255,0,0.25)] transition hover:shadow-[0_0_45px_rgba(204,255,0,0.4)]"
+              className="bg-black px-5 py-2.5 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-neutral-800"
             >
-              Launch Trade Terminal
-            </Link>
-            <Link
-              href="/docs"
-              className="rounded-full border border-white/15 px-6 py-3 text-sm font-medium text-neutral-300 transition hover:border-white/30 hover:bg-white/5"
-            >
-              Read the Docs
+              Launch Terminal
             </Link>
           </div>
+        </div>
+      </header>
 
-          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-4">
-            {HERO_STATS.map((s) => (
-              <div key={s.label} className="bg-[#0a0a06] px-4 py-6">
-                <div className="font-mono text-xl font-bold text-lime-300">
-                  {s.value}
+      {/* Hero */}
+      <section className="mx-auto max-w-6xl px-4 pt-4">
+        <div className="border border-dashed border-black/25 px-6 pb-8 pt-16 sm:pt-24">
+          <div className="text-center">
+            <div className="text-sm">
+              🏹 <strong>Robinhood</strong> Chain
+            </div>
+            <h1 className="font-display mx-auto mt-6 max-w-3xl text-5xl leading-[1.08] sm:text-6xl">
+              Trade stocks like crypto,
+              <br />
+              24/7 and on-chain
+            </h1>
+            <p className="mx-auto mt-6 max-w-xl text-[15px] leading-relaxed text-neutral-700">
+              Long or short tokenized equities with up to 20x leverage on a
+              vAMM perpetuals exchange — no market hours, no broker, PnL
+              settled on Robinhood Chain.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/trade"
+                className="border border-black/15 bg-white px-6 py-3 text-xs font-bold uppercase tracking-wide text-black transition hover:border-black/40"
+              >
+                Launch Terminal
+              </Link>
+              <Link
+                href="/docs"
+                className="bg-black px-6 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:bg-neutral-800"
+              >
+                ⇢ Read the Docs
+              </Link>
+            </div>
+          </div>
+
+          {/* Lime artwork panel */}
+          <div className="relative mt-14 overflow-hidden bg-gradient-to-br from-lime-300 via-[#d8ff33] to-[#9fc700]">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-[0.16]"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(0deg, transparent, transparent 22px, #1a2500 22px, #1a2500 23px), repeating-linear-gradient(90deg, transparent, transparent 22px, #1a2500 22px, #1a2500 23px)",
+              }}
+            />
+            <div className="relative grid grid-cols-2 gap-px sm:grid-cols-4">
+              {[
+                { label: "Markets", value: `${MARKETS.length}` },
+                { label: "Max leverage", value: "20x" },
+                { label: "24h index volume", value: volume },
+                { label: "Trading hours", value: "24/7" },
+              ].map((s) => (
+                <div key={s.label} className="px-6 py-10 text-center">
+                  <div className="font-display text-3xl text-black sm:text-4xl">
+                    {s.value}
+                  </div>
+                  <div className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-black/60">
+                    {s.label}
+                  </div>
                 </div>
-                <div className="mt-1.5 text-[10px] uppercase tracking-wider text-neutral-500">
-                  {s.label}
+              ))}
+            </div>
+            <div className="relative border-t border-black/15 px-6 py-3 text-center font-mono text-[11px] uppercase tracking-[0.25em] text-black/50">
+              ➳ Quiver — perpetual futures on tokenized stocks ➳
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem — black section */}
+      <section className="mt-6 bg-black text-white">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="font-display mx-auto max-w-3xl text-center text-3xl leading-snug sm:text-5xl">
+            Stock markets close at 4pm, gate leverage, and make shorting{" "}
+            <span className="text-neutral-500">nearly impossible.</span>
+          </h2>
+          <div className="mt-14 grid gap-px bg-white/10 sm:grid-cols-2">
+            {PROBLEMS.map((p) => (
+              <div key={p.title} className="bg-black p-8">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-lime-300/10 text-lg">
+                  🏹
                 </div>
+                <h3 className="font-display mt-5 text-xl">{p.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+                  {p.body}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 pb-20 pt-4">
-        <div className="mb-5 flex items-end justify-between">
-          <div>
-            <h2 className="font-display text-2xl sm:text-3xl">Markets</h2>
-            <p className="mt-1 text-xs text-neutral-500">
-              Live index prices · up to 20x leverage
-            </p>
-          </div>
-          <Link
-            href="/trade"
-            className="text-xs font-medium text-lime-300 hover:underline"
-          >
-            Open terminal →
-          </Link>
-        </div>
-        <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a06]">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-white/10 text-[11px] uppercase tracking-wider text-neutral-500">
-              <tr>
-                <th className="px-5 py-3.5">Market</th>
-                <th className="hidden px-5 py-3.5 sm:table-cell">Underlying</th>
-                <th className="px-5 py-3.5 text-right">Index price</th>
-                <th className="px-5 py-3.5 text-right">24h</th>
-                <th className="hidden px-5 py-3.5 text-right sm:table-cell">
-                  Max lev.
-                </th>
-                <th className="px-5 py-3.5 text-right" />
-              </tr>
-            </thead>
-            <tbody className="font-mono text-xs">
-              {MARKETS.map((m) => {
-                const lq = quotes[m.key];
-                const px = lq?.price ?? m.basePrice;
-                const chg = lq?.changePct ?? dayStats(m, m.basePrice).changePct;
-                return (
-                  <tr
-                    key={m.key}
-                    className="border-t border-white/5 transition hover:bg-white/5"
-                  >
-                    <td className="px-5 py-4">
-                      <span
-                        className="mr-2.5 inline-block h-2 w-2 rounded-full"
-                        style={{ background: m.color }}
-                      />
-                      <span className="font-semibold text-white">
-                        {m.label}
-                      </span>
-                    </td>
-                    <td className="hidden px-5 py-4 text-neutral-400 sm:table-cell">
-                      {m.name}
-                    </td>
-                    <td className="px-5 py-4 text-right text-neutral-200">
-                      ${px.toFixed(2)}
-                    </td>
-                    <td
-                      className={`px-5 py-4 text-right ${chg >= 0 ? "text-lime-300" : "text-red-400"}`}
-                    >
-                      {chg >= 0 ? "+" : ""}
-                      {chg.toFixed(2)}%
-                    </td>
-                    <td className="hidden px-5 py-4 text-right text-neutral-400 sm:table-cell">
-                      20x
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <Link
-                        href={`/trade?m=${m.key}`}
-                        className="rounded-full bg-lime-400/10 px-3.5 py-1.5 text-[11px] font-semibold text-lime-300 transition hover:bg-lime-400/20"
-                      >
-                        Trade
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-5xl px-6 pb-20">
-        <h2 className="font-display text-2xl sm:text-3xl">Why Quiver</h2>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2">
-          {FEATURES.map((f) => (
-            <div
-              key={f.title}
-              className="group rounded-2xl border border-white/10 bg-[#0a0a06] p-6 transition hover:border-lime-400/30"
-            >
-              <div className="font-mono text-[11px] text-neutral-600 group-hover:text-lime-300/60">
-                {f.n}
-              </div>
-              <h3 className="mt-2 text-sm font-semibold text-lime-300">
-                {f.title}
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-neutral-400">
-                {f.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-5xl px-6 pb-20">
-        <h2 className="font-display text-2xl sm:text-3xl">How it works</h2>
-        <div className="mt-5 grid gap-4 sm:grid-cols-3">
-          {STEPS.map((s, i) => (
-            <div
-              key={s.title}
-              className="rounded-2xl border border-white/10 bg-[#0a0a06] p-6"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-lime-400/10 font-mono text-xs font-bold text-lime-300">
-                {i + 1}
-              </div>
-              <h3 className="mt-3 text-sm font-semibold text-white">
-                {s.title}
-              </h3>
-              <p className="mt-2 text-xs leading-relaxed text-neutral-400">
-                {s.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-3xl px-6 pb-20">
-        <h2 className="font-display text-center text-2xl sm:text-3xl">FAQ</h2>
-        <div className="mt-7 space-y-3">
-          {FAQ.map((f) => (
-            <div
-              key={f.q}
-              className="rounded-2xl border border-white/10 bg-[#0a0a06] p-5"
-            >
-              <h3 className="text-sm font-semibold text-white">{f.q}</h3>
-              <p className="mt-2 text-xs leading-relaxed text-neutral-400">
-                {f.a}
-              </p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-6 text-center text-xs text-neutral-500">
-          More detail in the{" "}
-          <Link href="/docs" className="text-lime-300 hover:underline">
-            documentation
-          </Link>
-          .
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-5xl px-6 pb-24">
-        <div className="relative overflow-hidden rounded-3xl border border-lime-400/20 bg-[#0a0a06] px-6 py-14 text-center">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-0 h-[220px] w-[520px] -translate-x-1/2 rounded-full bg-lime-400/10 blur-[100px]"
-          />
-          <h2 className="font-display relative text-3xl sm:text-4xl">
-            Ready to trade stocks{" "}
-            <span className="text-lime-300 italic">24/7</span>?
+      {/* Solution — light section */}
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <div className="border border-dashed border-black/25 px-6 py-16 sm:px-10">
+          <h2 className="font-display mx-auto max-w-3xl text-center text-3xl leading-snug sm:text-4xl">
+            Open a leveraged position on a tokenized stock in one transaction
           </h2>
-          <p className="relative mx-auto mt-3 max-w-md text-sm text-neutral-400">
-            Jump into the testnet demo — no sign-up, no real funds, just
-            connect and trade.
-          </p>
-          <Link
-            href="/trade"
-            className="relative mt-7 inline-block rounded-full bg-lime-400 px-7 py-3 text-sm font-bold text-black shadow-[0_0_30px_rgba(204,255,0,0.25)] transition hover:shadow-[0_0_45px_rgba(204,255,0,0.4)]"
-          >
-            Launch Trade Terminal
-          </Link>
+
+          <div className="mt-12 grid gap-12 lg:grid-cols-2">
+            <div>
+              <h3 className="font-display text-2xl">
+                Long or short, up to 20x
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-neutral-700">
+                Post tUSDC as isolated margin and trade against a virtual AMM
+                (x·y=k). A keeper anchors every market to its real index
+                price, and liquidations keep the system solvent.
+              </p>
+              <ul className="mt-6 space-y-3 text-sm">
+                <li className="flex items-start">
+                  <Arrow />
+                  One-click open, close and settle — fully on-chain
+                </li>
+                <li className="flex items-start">
+                  <Arrow />
+                  Isolated margin: one market never touches another
+                </li>
+                <li className="flex items-start">
+                  <Arrow />
+                  Real index feeds pushed on-chain by a keeper
+                </li>
+                <li className="flex items-start">
+                  <Arrow />
+                  0.10% taker fee, 5% maintenance margin
+                </li>
+              </ul>
+            </div>
+
+            {/* Markets table */}
+            <div className="border border-black/10">
+              <div className="flex items-center justify-between border-b border-black/10 px-5 py-3">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
+                  Live markets
+                </span>
+                <Link
+                  href="/trade"
+                  className="text-[11px] font-bold uppercase tracking-wider text-black hover:underline"
+                >
+                  Open terminal →
+                </Link>
+              </div>
+              <table className="w-full text-left text-sm">
+                <tbody className="font-mono text-xs">
+                  {MARKETS.map((m) => {
+                    const lq = quotes[m.key];
+                    const px = lq?.price ?? m.basePrice;
+                    const chg =
+                      lq?.changePct ?? dayStats(m, m.basePrice).changePct;
+                    return (
+                      <tr key={m.key} className="border-t border-black/5">
+                        <td className="px-5 py-3.5">
+                          <span
+                            className="mr-2.5 inline-block h-2 w-2 rounded-full"
+                            style={{ background: m.color }}
+                          />
+                          <span className="font-semibold">{m.label}</span>
+                        </td>
+                        <td className="px-3 py-3.5 text-right text-neutral-700">
+                          ${px.toFixed(2)}
+                        </td>
+                        <td
+                          className={`px-3 py-3.5 text-right ${chg >= 0 ? "text-lime-600" : "text-red-500"}`}
+                        >
+                          {chg >= 0 ? "+" : ""}
+                          {chg.toFixed(2)}%
+                        </td>
+                        <td className="px-5 py-3.5 text-right">
+                          <Link
+                            href={`/trade?m=${m.key}`}
+                            className="bg-black px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white hover:bg-neutral-800"
+                          >
+                            Trade
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </section>
 
-      <Footer />
+      {/* How it works — black section */}
+      <section className="bg-black text-white">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="font-display max-w-2xl text-3xl leading-snug sm:text-4xl">
+            How Quiver turns tUSDC into leveraged stock exposure
+          </h2>
+          <div className="mt-12 grid gap-px bg-white/10 md:grid-cols-3">
+            {HOW.map((h) => (
+              <div key={h.tag} className="bg-black p-8">
+                <div className="inline-block border border-lime-300/30 bg-lime-300/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-lime-300">
+                  {h.tag}
+                </div>
+                <h3 className="font-display mt-5 text-xl">{h.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+                  {h.body}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-8 text-xs text-neutral-500">
+            vAMM, faucet and vault contract addresses are published in the{" "}
+            <Link href="/docs" className="text-lime-300 hover:underline">
+              docs
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ — light */}
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        <div className="border border-dashed border-black/25 px-6 py-16 sm:px-10">
+          <h2 className="font-display text-3xl sm:text-4xl">
+            Have questions? Find answers.
+          </h2>
+          <div className="mt-8 divide-y divide-black/10 border-y border-black/10">
+            {FAQ.map((f) => (
+              <details key={f.q} className="group py-4">
+                <summary className="flex cursor-pointer items-center justify-between text-sm font-semibold">
+                  {f.q}
+                  <span className="text-neutral-400 transition group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-600">
+                  {f.a}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA — black band */}
+      <section className="bg-black text-white">
+        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 px-6 py-16 sm:flex-row sm:items-center">
+          <h2 className="font-display max-w-md text-3xl leading-snug sm:text-4xl">
+            Ready to trade stocks 24/7?
+          </h2>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/trade"
+              className="bg-lime-300 px-6 py-3 text-xs font-bold uppercase tracking-wide text-black transition hover:bg-lime-200"
+            >
+              Launch Terminal
+            </Link>
+            <Link
+              href="/docs"
+              className="border border-white/25 px-6 py-3 text-xs font-bold uppercase tracking-wide text-white transition hover:border-white/60"
+            >
+              Read the Docs
+            </Link>
+          </div>
+        </div>
+        <Footer />
+      </section>
     </div>
   );
 }
