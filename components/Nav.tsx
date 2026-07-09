@@ -14,6 +14,7 @@ const LINKS = [
 
 const EXTERNAL = [
   { href: "https://explorer.testnet.chain.robinhood.com", label: "Explorer" },
+  { href: "https://github.com/quivertrade/quiver", label: "GitHub" },
   { href: "https://x.com/_Quivertrade", label: "X" },
 ];
 
