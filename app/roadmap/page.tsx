@@ -24,18 +24,18 @@ const PHASES = [
   {
     tag: "Phase 1",
     title: "Contracts on testnet",
-    status: "next" as const,
+    status: "live" as const,
     items: [
-      "Deploy vAMM perp contracts to Robinhood Chain testnet",
-      "tUSDC collateral vault, isolated margin & insurance fund per market",
-      "Index-price keeper for tokenized-stock feeds",
+      "vAMM perp contracts live on Robinhood Chain testnet",
+      "tUSDC faucet & collateral, isolated margin, insurance pool",
+      "Index-price keeper pushing real stock feeds on-chain",
       "On-chain open / close / liquidate flow from the terminal",
     ],
   },
   {
     tag: "Phase 2",
     title: "Hardening",
-    status: "planned" as const,
+    status: "next" as const,
     items: [
       "Liquidation keeper bots & funding settlement",
       "Guarded launch caps (per-wallet deposit, open interest)",

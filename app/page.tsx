@@ -41,7 +41,7 @@ const HERO_STATS = [
   { label: "Markets", value: `${MARKETS.length}` },
   { label: "Max leverage", value: "20x" },
   {
-    label: "24h volume (demo)",
+    label: "24h index volume",
     value: `$${fmtCompact(MARKETS.reduce((s, m) => s + dayStats(m, m.basePrice).volume, 0))}`,
   },
   { label: "Network", value: "Robinhood Chain" },
@@ -77,7 +77,7 @@ const STEPS = [
   },
   {
     title: "Pick a market",
-    body: "Six tokenized-stock perps with live demo index feeds.",
+    body: "Six tokenized-stock perps with real live index price feeds.",
   },
   {
     title: "Trade",
@@ -88,15 +88,15 @@ const STEPS = [
 const FAQ = [
   {
     q: "Is this real money?",
-    a: "No — Quiver is a testnet demo. Balances, positions and PnL are simulated and have no monetary value.",
+    a: "No — Quiver runs on Robinhood Chain testnet. Collateral is test tUSDC from the faucet and has no monetary value.",
   },
   {
     q: "Are these real stocks?",
     a: "No. Markets are perpetual futures on tokenized-stock index prices — you never hold the underlying equity.",
   },
   {
-    q: "When do contracts go live?",
-    a: "The vAMM perp contracts are being ported to Robinhood Chain testnet. See the roadmap for status.",
+    q: "Are the contracts live?",
+    a: "Yes — the vAMM perp, tUSDC faucet and vault contracts are deployed on Robinhood Chain testnet. Connect a wallet on /trade to open positions on-chain. Addresses are in the docs.",
   },
   {
     q: "What wallet do I need?",

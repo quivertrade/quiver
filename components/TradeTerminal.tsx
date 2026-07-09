@@ -1140,8 +1140,8 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
           </button>
           {!isConnected && (
             <p className="mt-2 text-center text-[10px] text-neutral-600">
-              Demo mode — connect a wallet on Robinhood Chain Testnet to use
-              the on-chain tUSDC faucet &amp; vault.
+              Demo mode — connect a wallet on Robinhood Chain Testnet to trade
+              on-chain via the vAMM contract.
             </p>
           )}
         </div>

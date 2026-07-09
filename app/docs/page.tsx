@@ -68,10 +68,10 @@ export default function DocsPage() {
           .
         </P>
         <P>
-          <strong className="text-neutral-200">Status:</strong> demo on{" "}
-          {CHAIN.name}. Trading is currently a client-side simulation — smart
-          contracts are being ported and are not yet deployed. Nothing here has
-          monetary value. See the{" "}
+          <strong className="text-neutral-200">Status:</strong> live on{" "}
+          {CHAIN.name}. The vAMM perp contracts are deployed — connect a wallet
+          to open, close and get liquidated fully on-chain, or use the instant
+          demo mode. Nothing here has monetary value. See the{" "}
           <Link href="/risk" className="text-lime-300 hover:underline">
             risk disclaimer
           </Link>
@@ -139,9 +139,9 @@ export default function DocsPage() {
             — demo mode works instantly with a $10,000 tUSDC paper balance.
           </li>
           <li>
-            Optionally connect a wallet on {CHAIN.name} (chain ID{" "}
-            {CHAIN.chainId}) to use the live on-chain tUSDC faucet and vault
-            (deposit / withdraw real testnet transactions).
+            Connect a wallet on {CHAIN.name} (chain ID {CHAIN.chainId}) to
+            trade on-chain: mint tUSDC from the faucet, then open and close
+            positions directly against the QuiverPerp vAMM contract.
           </li>
           <li>
             Pick a market, choose <strong className="text-neutral-200">Long</strong>{" "}
@@ -181,8 +181,8 @@ export default function DocsPage() {
         <H2>8. FAQ</H2>
         <h3 className="mt-4 text-sm font-semibold text-neutral-200">Is this real money?</h3>
         <P>
-          No. Quiver is a testnet demo — balances, positions and PnL are
-          simulated and have no monetary value.
+          No. Quiver runs on testnet — collateral is faucet tUSDC and has no
+          monetary value.
         </P>
         <h3 className="mt-4 text-sm font-semibold text-neutral-200">
           Are these real stocks?
@@ -193,15 +193,16 @@ export default function DocsPage() {
           rights or dividends.
         </P>
         <h3 className="mt-4 text-sm font-semibold text-neutral-200">
-          When do contracts go live?
+          Are the contracts live?
         </h3>
         <P>
-          The protocol contracts are being ported to Robinhood Chain testnet —
-          see the{" "}
+          Yes — the QuiverPerp vAMM, tUSDC faucet and vault contracts are
+          deployed on Robinhood Chain testnet (addresses above). A keeper
+          pushes real index prices on-chain. See the{" "}
           <Link href="/roadmap" className="text-lime-300 hover:underline">
             roadmap
           </Link>{" "}
-          for the current status.
+          for what&apos;s next.
         </P>
 
         <div className="mt-16 flex flex-wrap gap-5 border-t border-white/10 pt-6 text-[11px] uppercase tracking-[0.15em] text-neutral-500">
