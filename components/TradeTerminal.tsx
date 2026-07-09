@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
-import { OnchainVault } from "@/components/OnchainVault";
+import { OnchainTrade } from "@/components/OnchainTrade";
 import {
   MARKETS,
   TIMEFRAMES,
@@ -1146,8 +1146,8 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
           )}
         </div>
 
-        {/* On-chain vault (live contracts on Robinhood testnet) */}
-        <OnchainVault onToast={toast} />
+        {/* On-chain trading (live vAMM contracts on Robinhood testnet) */}
+        <OnchainTrade market={selected} onToast={toast} />
 
         {/* Price alerts */}
         <div className="rounded-lg border border-white/10 bg-[#110e08] p-3">

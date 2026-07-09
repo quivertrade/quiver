@@ -1,5 +1,6 @@
 {
   "chainId": 46630,
-  "testUSDC": "0x5ef8437997121a94cf9348e161860b76d4c584db",
-  "quiverVault": "0x7ff30b1f3d0f0e79a30450dc6011f36169eba5b0"
+  "testUSDC": "0xafe78687b234a1fb2b8c42c3b9fdfd1c0940c770",
+  "quiverVault": "0x4ff905a4649478057edb97a421e58c5180a29e35",
+  "quiverPerp": "0xa45135a54d18b850aa248fb7078df10089cb2ad0"
 }

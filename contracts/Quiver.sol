@@ -7,6 +7,9 @@ contract TestUSDC {
     string public constant symbol = "tUSDC";
     uint8 public constant decimals = 6;
 
+    address public owner;
+    mapping(address => bool) public minters;
+
     uint256 public totalSupply;
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
@@ -17,6 +20,24 @@ contract TestUSDC {
 
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    function setMinter(address minter, bool allowed) external {
+        require(msg.sender == owner, "ERC20: not owner");
+        minters[minter] = allowed;
+    }
+
+    /// @notice Testnet-only: authorized contracts (the perp engine) can mint
+    ///         so winning traders can always be paid out.
+    function mint(address to, uint256 value) external {
+        require(minters[msg.sender], "ERC20: not minter");
+        totalSupply += value;
+        balanceOf[to] += value;
+        emit Transfer(address(0), to, value);
+    }
 
     function faucet() external {
         require(

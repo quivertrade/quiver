@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { MARKETS } from "@/lib/markets";
-import { TEST_USDC_ADDRESS, QUIVER_VAULT_ADDRESS } from "@/lib/contracts";
+import {
+  TEST_USDC_ADDRESS,
+  QUIVER_VAULT_ADDRESS,
+  QUIVER_PERP_ADDRESS,
+} from "@/lib/contracts";
 
 export const metadata: Metadata = {
   title: "Docs — Quiver",
@@ -166,6 +170,11 @@ export default function DocsPage() {
             label="Vault"
             value={QUIVER_VAULT_ADDRESS}
             href={`${CHAIN.explorer}/address/${QUIVER_VAULT_ADDRESS}`}
+          />
+          <Row
+            label="Perp (vAMM)"
+            value={QUIVER_PERP_ADDRESS}
+            href={`${CHAIN.explorer}/address/${QUIVER_PERP_ADDRESS}`}
           />
         </div>
 
