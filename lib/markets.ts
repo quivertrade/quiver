@@ -35,9 +35,24 @@ export interface Candle {
   c: number;
 }
 
+export type Timeframe = "5m" | "15m" | "1h" | "4h";
+
+export const TIMEFRAMES: Timeframe[] = ["5m", "15m", "1h", "4h"];
+
+const TF_SCALE: Record<Timeframe, number> = {
+  "5m": 0.5,
+  "15m": 1,
+  "1h": 2,
+  "4h": 4,
+};
+
 /** Deterministic-ish random walk seeded per market for the demo vAMM. */
-export function genCandles(m: Market, n = 60): Candle[] {
-  let seed = m.key.charCodeAt(0) * 7919 + m.key.charCodeAt(1) * 104729;
+export function genCandles(m: Market, n = 60, tf: Timeframe = "15m"): Candle[] {
+  const scale = TF_SCALE[tf];
+  let seed =
+    m.key.charCodeAt(0) * 7919 +
+    m.key.charCodeAt(1) * 104729 +
+    Math.round(scale * 1000) * 31;
   const rand = () => {
     seed = (seed * 1103515245 + 12345) % 2147483648;
     return seed / 2147483648;
@@ -46,10 +61,10 @@ export function genCandles(m: Market, n = 60): Candle[] {
   let px = m.basePrice * (0.97 + rand() * 0.02);
   for (let i = 0; i < n; i++) {
     const o = px;
-    const drift = (rand() - 0.5) * 2 * m.volatility * 8 * px;
+    const drift = (rand() - 0.5) * 2 * m.volatility * 8 * scale * px;
     const c = o + drift;
-    const h = Math.max(o, c) + rand() * m.volatility * 4 * px;
-    const l = Math.min(o, c) - rand() * m.volatility * 4 * px;
+    const h = Math.max(o, c) + rand() * m.volatility * 4 * scale * px;
+    const l = Math.min(o, c) - rand() * m.volatility * 4 * scale * px;
     out.push({ o, h, l, c });
     px = c;
   }
@@ -135,6 +150,17 @@ export function orderBook(mark: number, rows = 8): { bids: Level[]; asks: Level[
     asks.push({ price: mark + step * i, size: asize, total: at });
   }
   return { bids, asks };
+}
+
+export interface Order {
+  id: number;
+  market: MarketKey;
+  side: "long" | "short";
+  price: number; // limit price
+  margin: number;
+  leverage: number;
+  tp?: number;
+  sl?: number;
 }
 
 export interface Trade {

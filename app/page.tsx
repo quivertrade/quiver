@@ -190,7 +190,7 @@ export default function Home() {
                     </td>
                     <td className="px-5 py-4 text-right">
                       <Link
-                        href="/trade"
+                        href={`/trade?m=${m.key}`}
                         className="rounded-full bg-lime-400/10 px-3.5 py-1.5 text-[11px] font-semibold text-lime-300 transition hover:bg-lime-400/20"
                       >
                         Trade

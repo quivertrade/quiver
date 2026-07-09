@@ -4,8 +4,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import {
   MARKETS,
+  TIMEFRAMES,
   type MarketKey,
   type Position,
+  type Order,
+  type Timeframe,
   type Trade,
   marketByKey,
   genCandles,
@@ -22,13 +25,14 @@ import {
 import { Chart } from "./Chart";
 
 const MAX_LEV = 20;
+const STORAGE_KEY = "quiver-demo-v1";
 type OrderType = "market" | "limit";
-type Tab = "positions" | "book" | "trades";
+type Tab = "positions" | "orders" | "book" | "trades";
 type Toast = { id: number; kind: "ok" | "warn" | "info"; msg: string };
 
-export function TradeTerminal() {
+export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) {
   const { isConnected } = useAccount();
-  const [selected, setSelected] = useState<MarketKey>("TSLA");
+  const [selected, setSelected] = useState<MarketKey>(initialMarket ?? "TSLA");
   const [side, setSide] = useState<"long" | "short">("long");
   const [orderType, setOrderType] = useState<OrderType>("market");
   const [limitPrice, setLimitPrice] = useState("");
@@ -39,7 +43,10 @@ export function TradeTerminal() {
   const [tp, setTp] = useState("");
   const [sl, setSl] = useState("");
   const [positions, setPositions] = useState<Position[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [balance, setBalance] = useState(10_000);
+  const [tf, setTf] = useState<Timeframe>("15m");
+  const [hydrated, setHydrated] = useState(false);
   const [tab, setTab] = useState<Tab>("positions");
   const [trades, setTrades] = useState<Trade[]>([]);
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -57,9 +64,39 @@ export function TradeTerminal() {
     setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3200);
   }, []);
 
-  // keep latest positions in a ref so the interval can auto-close TP/SL/liq
+  // persist demo account across reloads
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const s = JSON.parse(raw) as {
+          balance?: number;
+          positions?: Position[];
+          orders?: Order[];
+        };
+        if (typeof s.balance === "number") setBalance(s.balance);
+        if (Array.isArray(s.positions)) setPositions(s.positions);
+        if (Array.isArray(s.orders)) setOrders(s.orders);
+      }
+    } catch {
+      // corrupted state — start fresh
+    }
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ balance, positions, orders }),
+    );
+  }, [hydrated, balance, positions, orders]);
+
+  // keep latest positions/orders in refs so the interval can act on them
   const posRef = useRef(positions);
   posRef.current = positions;
+  const ordersRef = useRef(orders);
+  ordersRef.current = orders;
 
   const closeInternal = useCallback(
     (p: Position, mk: number, reason?: string) => {
@@ -97,13 +134,39 @@ export function TradeTerminal() {
           else if (hitTp) closeInternal(p, mk, "Take-profit");
           else if (hitSl) closeInternal(p, mk, "Stop-loss");
         }
+        // fill resting limit orders
+        for (const o of ordersRef.current) {
+          const mk = next[o.market];
+          const filled = o.side === "long" ? mk <= o.price : mk >= o.price;
+          if (filled) {
+            setOrders((os) => os.filter((x) => x.id !== o.id));
+            setPositions((ps) => [
+              ...ps,
+              {
+                id: o.id,
+                market: o.market,
+                side: o.side,
+                size: o.margin * o.leverage,
+                margin: o.margin,
+                leverage: o.leverage,
+                entry: o.price,
+                tp: o.tp,
+                sl: o.sl,
+              },
+            ]);
+            toast(
+              "ok",
+              `Limit filled ${o.side.toUpperCase()} ${marketByKey(o.market).label} @ ${fmtUsd(o.price)}`,
+            );
+          }
+        }
         return next;
       });
       setTrades((prev) => [genTrade(marksRef.current[selectedRef.current]), ...prev].slice(0, 30));
       setTick((t) => t + 1);
     }, 1500);
     return () => clearInterval(id);
-  }, [closeInternal]);
+  }, [closeInternal, toast]);
 
   // refs to read fresh values inside interval
   const marksRef = useRef(marks);
@@ -112,7 +175,7 @@ export function TradeTerminal() {
   selectedRef.current = selected;
 
   const market = marketByKey(selected);
-  const candles = useMemo(() => genCandles(market), [market]);
+  const candles = useMemo(() => genCandles(market, 60, tf), [market, tf]);
   const mark = marks[selected];
   const stats = dayStats(market, mark);
   const funding = fundingRate(market, mark);
@@ -130,11 +193,51 @@ export function TradeTerminal() {
   const setMarginPct = (pct: number) =>
     setMargin(((balance * pct) / 100).toFixed(0));
 
+  const cancelOrder = (o: Order) => {
+    setOrders((os) => os.filter((x) => x.id !== o.id));
+    setBalance((b) => b + o.margin);
+    toast("info", `Cancelled limit ${marketByKey(o.market).label}`);
+  };
+
+  const resetAccount = () => {
+    setPositions([]);
+    setOrders([]);
+    setBalance(10_000);
+    toast("ok", "Demo account reset — $10,000.00 tUSDC");
+  };
+
   const open = () => {
     if (marginNum <= 0) return toast("warn", "Enter a margin amount");
     if (marginNum > balance) return toast("warn", "Insufficient balance");
     const tpNum = tpEnabled ? Number(tp) : undefined;
     const slNum = slEnabled ? Number(sl) : undefined;
+    if (orderType === "limit") {
+      const lp = Number(limitPrice);
+      if (!(lp > 0)) return toast("warn", "Enter a limit price");
+      const marketable = side === "long" ? mark <= lp : mark >= lp;
+      if (!marketable) {
+        setOrders((os) => [
+          ...os,
+          {
+            id: Date.now(),
+            market: selected,
+            side,
+            price: lp,
+            margin: marginNum,
+            leverage,
+            tp: tpNum && tpNum > 0 ? tpNum : undefined,
+            sl: slNum && slNum > 0 ? slNum : undefined,
+          },
+        ]);
+        setBalance((b) => b - marginNum);
+        setTab("orders");
+        toast(
+          "info",
+          `Limit ${side.toUpperCase()} ${market.label} placed @ ${fmtUsd(lp)}`,
+        );
+        return;
+      }
+    }
     setPositions((ps) => [
       ...ps,
       {
@@ -279,6 +382,21 @@ export function TradeTerminal() {
               value={`${funding >= 0 ? "+" : ""}${funding.toFixed(4)}%`}
               tone={funding >= 0 ? "up" : "down"}
             />
+            <div className="ml-auto flex gap-1">
+              {TIMEFRAMES.map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTf(t)}
+                  className={`rounded px-2 py-1 font-mono text-[10px] ${
+                    tf === t
+                      ? "bg-lime-400/15 text-lime-300"
+                      : "text-neutral-500 hover:text-neutral-300"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="h-56 sm:h-64">
             <Chart candles={candles} mark={mark} />
@@ -291,6 +409,7 @@ export function TradeTerminal() {
             {(
               [
                 ["positions", `Positions (${positions.length})`],
+                ["orders", `Orders (${orders.length})`],
                 ["book", "Order Book"],
                 ["trades", "Trades"],
               ] as [Tab, string][]
@@ -403,6 +522,64 @@ export function TradeTerminal() {
               </div>
             ))}
 
+          {tab === "orders" &&
+            (orders.length === 0 ? (
+              <p className="px-3 py-6 text-center text-xs text-neutral-600">
+                No open orders. Place a limit order from the order panel.
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="text-[10px] uppercase text-neutral-600">
+                    <tr>
+                      <th className="px-3 py-2">Market</th>
+                      <th className="px-2 py-2">Side</th>
+                      <th className="px-2 py-2">Limit</th>
+                      <th className="px-2 py-2">Mark</th>
+                      <th className="px-2 py-2">Size</th>
+                      <th className="px-2 py-2">TP / SL</th>
+                      <th className="px-2 py-2" />
+                    </tr>
+                  </thead>
+                  <tbody className="font-mono">
+                    {orders.map((o) => (
+                      <tr key={o.id} className="border-t border-white/5">
+                        <td className="px-3 py-2 text-white">
+                          {marketByKey(o.market).label}
+                        </td>
+                        <td
+                          className={`px-2 py-2 ${o.side === "long" ? "text-lime-300" : "text-red-400"}`}
+                        >
+                          {o.side.toUpperCase()} {o.leverage}x
+                        </td>
+                        <td className="px-2 py-2 text-neutral-300">
+                          {fmtUsd(o.price)}
+                        </td>
+                        <td className="px-2 py-2 text-neutral-300">
+                          {fmtUsd(marks[o.market])}
+                        </td>
+                        <td className="px-2 py-2 text-neutral-300">
+                          ${fmtUsd(o.margin * o.leverage, 0)}
+                        </td>
+                        <td className="px-2 py-2 text-neutral-400">
+                          {o.tp ? fmtUsd(o.tp) : "—"} /{" "}
+                          {o.sl ? fmtUsd(o.sl) : "—"}
+                        </td>
+                        <td className="px-2 py-2">
+                          <button
+                            onClick={() => cancelOrder(o)}
+                            className="rounded border border-white/20 px-1.5 py-0.5 text-[10px] text-neutral-300 hover:bg-white/10"
+                          >
+                            Cancel
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+
           {tab === "book" && (
             <div className="grid grid-cols-2 gap-px p-2 font-mono text-[11px]">
               <div>
@@ -471,6 +648,17 @@ export function TradeTerminal() {
       <div className="flex flex-col gap-3">
         <div className="rounded-lg border border-white/10 bg-[#110e08] p-3">
           {/* account summary */}
+          <div className="mb-1 flex items-center justify-between">
+            <span className="text-[10px] uppercase tracking-wider text-neutral-600">
+              Demo account
+            </span>
+            <button
+              onClick={resetAccount}
+              className="rounded border border-white/10 px-2 py-0.5 text-[10px] text-neutral-400 hover:bg-white/5 hover:text-white"
+            >
+              Reset · Faucet
+            </button>
+          </div>
           <div className="mb-3 grid grid-cols-3 gap-2 rounded-md bg-black/30 p-2 text-center">
             <div>
               <div className="font-mono text-xs text-white">${fmtUsd(equity)}</div>
