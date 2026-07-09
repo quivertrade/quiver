@@ -26,7 +26,17 @@ import {
   fmtCompact,
 } from "@/lib/markets";
 import { sharePnlCard } from "@/lib/shareCard";
+import { syncPoints } from "@/lib/leaderboard";
 import { Chart } from "./Chart";
+import type { Candle } from "@/lib/markets";
+
+interface Quote {
+  price: number;
+  prevClose: number;
+  high: number;
+  low: number;
+  volume: number;
+}
 
 const MAX_LEV = 20;
 const STORAGE_KEY = "quiver-demo-v1";
@@ -69,6 +79,8 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
       MARKETS.map((m) => [m.key, genCandles(m).at(-1)!.c]),
     ) as Record<MarketKey, number>,
   );
+  const [quotes, setQuotes] = useState<Partial<Record<MarketKey, Quote>>>({});
+  const [liveCandles, setLiveCandles] = useState<Candle[] | null>(null);
 
   const toast = useCallback((kind: Toast["kind"], msg: string) => {
     const id = Date.now() + Math.random();
@@ -157,7 +169,8 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
       setMarks((prev) => {
         const next = { ...prev };
         for (const m of MARKETS) {
-          const jitter = (Math.random() - 0.5) * 2 * m.volatility * prev[m.key];
+          const jitter =
+            (Math.random() - 0.5) * 0.5 * m.volatility * prev[m.key];
           next[m.key] = Math.max(0.01, prev[m.key] + jitter);
         }
         // auto-trigger TP / SL / liquidation
@@ -219,6 +232,64 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
     return () => clearInterval(id);
   }, [closeInternal, toast]);
 
+  // push points to the shared leaderboard (debounced)
+  useEffect(() => {
+    if (!hydrated) return;
+    const realized = history.reduce((s, h) => s + h.pnl, 0);
+    const id = setTimeout(() => syncPoints(points, realized), 2000);
+    return () => clearTimeout(id);
+  }, [hydrated, points, history]);
+
+  // real market prices from the price feed
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/prices");
+        if (!res.ok) return;
+        const data = (await res.json()) as Partial<Record<MarketKey, Quote>>;
+        if (cancelled || !Object.keys(data).length) return;
+        setQuotes(data);
+        setMarks((prev) => {
+          const next = { ...prev };
+          for (const m of MARKETS) {
+            const q = data[m.key];
+            if (q?.price) next[m.key] = q.price;
+          }
+          return next;
+        });
+      } catch {
+        // feed unavailable — keep demo walk
+      }
+    };
+    load();
+    const id = setInterval(load, 10_000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
+  }, []);
+
+  // real candles for the selected market / timeframe
+  useEffect(() => {
+    let cancelled = false;
+    setLiveCandles(null);
+    (async () => {
+      try {
+        const res = await fetch(`/api/candles?symbol=${selected}&tf=${tf}`);
+        if (!res.ok) return;
+        const data = (await res.json()) as Candle[];
+        if (!cancelled && Array.isArray(data) && data.length > 10)
+          setLiveCandles(data);
+      } catch {
+        // fall back to generated candles
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [selected, tf]);
+
   // refs to read fresh values inside interval
   const marksRef = useRef(marks);
   marksRef.current = marks;
@@ -226,9 +297,19 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
   selectedRef.current = selected;
 
   const market = marketByKey(selected);
-  const candles = useMemo(() => genCandles(market, 60, tf), [market, tf]);
+  const genFallback = useMemo(() => genCandles(market, 60, tf), [market, tf]);
+  const candles = liveCandles ?? genFallback;
   const mark = marks[selected];
-  const stats = dayStats(market, mark);
+  const q = quotes[selected];
+  const stats = q
+    ? {
+        changePct: ((mark - q.prevClose) / q.prevClose) * 100,
+        high: Math.max(q.high, mark),
+        low: Math.min(q.low, mark),
+        volume: q.volume * mark,
+        open: q.prevClose,
+      }
+    : dayStats(market, mark);
   const funding = fundingRate(market, mark);
   const book = useMemo(() => orderBook(mark), [mark]);
 
@@ -419,7 +500,10 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
         <ul className="flex overflow-x-auto lg:block">
           {MARKETS.map((m) => {
             const active = m.key === selected;
-            const chg = dayStats(m, marks[m.key]).changePct;
+            const mq = quotes[m.key];
+            const chg = mq
+              ? ((marks[m.key] - mq.prevClose) / mq.prevClose) * 100
+              : dayStats(m, marks[m.key]).changePct;
             return (
               <li key={m.key} className="min-w-[130px] flex-1 lg:min-w-0">
                 <button

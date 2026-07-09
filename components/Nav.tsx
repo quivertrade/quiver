@@ -8,6 +8,7 @@ import { GitHubIcon, XIcon } from "./SocialIcons";
 
 const LINKS = [
   { href: "/trade", label: "Trade" },
+  { href: "/portfolio", label: "Portfolio" },
   { href: "/docs", label: "Docs" },
   { href: "/roadmap", label: "Roadmap" },
   { href: "/token", label: "Token" },

@@ -3,6 +3,40 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { MARKETS, dayStats, fmtCompact } from "@/lib/markets";
 
+export const revalidate = 60;
+
+interface LandingQuote {
+  price: number;
+  changePct: number;
+}
+
+async function fetchQuotes(): Promise<Partial<Record<string, LandingQuote>>> {
+  const out: Partial<Record<string, LandingQuote>> = {};
+  await Promise.all(
+    MARKETS.map(async (m) => {
+      try {
+        const res = await fetch(
+          `https://query1.finance.yahoo.com/v8/finance/chart/${m.key}?interval=1d&range=1d`,
+          { headers: { "User-Agent": "Mozilla/5.0" }, next: { revalidate: 60 } },
+        );
+        if (!res.ok) return;
+        const meta = (await res.json())?.chart?.result?.[0]?.meta;
+        if (!meta?.regularMarketPrice) return;
+        const prev = meta.previousClose ?? meta.chartPreviousClose;
+        out[m.key] = {
+          price: meta.regularMarketPrice,
+          changePct: prev
+            ? ((meta.regularMarketPrice - prev) / prev) * 100
+            : 0,
+        };
+      } catch {
+        // fall back to demo price
+      }
+    }),
+  );
+  return out;
+}
+
 const HERO_STATS = [
   { label: "Markets", value: `${MARKETS.length}` },
   { label: "Max leverage", value: "20x" },
@@ -70,7 +104,8 @@ const FAQ = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const quotes = await fetchQuotes();
   return (
     <div className="min-h-screen bg-[#000000] text-white">
       <Nav />
@@ -132,7 +167,7 @@ export default function Home() {
           <div>
             <h2 className="font-display text-2xl sm:text-3xl">Markets</h2>
             <p className="mt-1 text-xs text-neutral-500">
-              Demo index feeds · up to 20x leverage
+              Live index prices · up to 20x leverage
             </p>
           </div>
           <Link
@@ -148,7 +183,7 @@ export default function Home() {
               <tr>
                 <th className="px-5 py-3.5">Market</th>
                 <th className="hidden px-5 py-3.5 sm:table-cell">Underlying</th>
-                <th className="px-5 py-3.5 text-right">Index (demo)</th>
+                <th className="px-5 py-3.5 text-right">Index price</th>
                 <th className="px-5 py-3.5 text-right">24h</th>
                 <th className="hidden px-5 py-3.5 text-right sm:table-cell">
                   Max lev.
@@ -158,7 +193,9 @@ export default function Home() {
             </thead>
             <tbody className="font-mono text-xs">
               {MARKETS.map((m) => {
-                const chg = dayStats(m, m.basePrice).changePct;
+                const lq = quotes[m.key];
+                const px = lq?.price ?? m.basePrice;
+                const chg = lq?.changePct ?? dayStats(m, m.basePrice).changePct;
                 return (
                   <tr
                     key={m.key}
@@ -177,7 +214,7 @@ export default function Home() {
                       {m.name}
                     </td>
                     <td className="px-5 py-4 text-right text-neutral-200">
-                      ${m.basePrice.toFixed(2)}
+                      ${px.toFixed(2)}
                     </td>
                     <td
                       className={`px-5 py-4 text-right ${chg >= 0 ? "text-lime-300" : "text-red-400"}`}
