@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ConnectButton } from "./ConnectButton";
+import { GitHubIcon, XIcon } from "./SocialIcons";
 
 const LINKS = [
   { href: "/trade", label: "Trade" },
@@ -14,8 +15,19 @@ const LINKS = [
 
 const EXTERNAL = [
   { href: "https://explorer.testnet.chain.robinhood.com", label: "Explorer" },
-  { href: "https://github.com/quivertrade/quiver", label: "GitHub" },
-  { href: "https://x.com/_Quivertrade", label: "X" },
+];
+
+const SOCIALS = [
+  {
+    href: "https://github.com/quivertrade/quiver",
+    label: "GitHub",
+    icon: <GitHubIcon />,
+  },
+  {
+    href: "https://x.com/_Quivertrade",
+    label: "X (Twitter)",
+    icon: <XIcon />,
+  },
 ];
 
 export function Nav() {
@@ -54,6 +66,20 @@ export function Nav() {
                 {l.label}
               </a>
             ))}
+            <span className="flex items-center gap-4">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.href}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  className="hover:text-white"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </span>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -115,6 +141,20 @@ export function Nav() {
                 {l.label}
               </a>
             ))}
+            <div className="flex items-center gap-5 px-2 py-2.5">
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.href}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  className="text-neutral-400 hover:text-white"
+                >
+                  {s.icon}
+                </a>
+              ))}
+            </div>
           </div>
           <span className="mt-2 inline-block rounded-full border border-lime-400/30 bg-lime-400/10 px-2.5 py-1 text-[10px] font-medium text-lime-300">
             Robinhood Chain Testnet · 46630

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GitHubIcon, XIcon } from "./SocialIcons";
 
 export function Footer() {
   return (
@@ -32,17 +33,19 @@ export function Footer() {
             href="https://github.com/quivertrade/quiver"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-lime-300"
+            aria-label="GitHub"
+            className="flex items-center hover:text-lime-300"
           >
-            GitHub
+            <GitHubIcon />
           </a>
           <a
             href="https://x.com/_Quivertrade"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-lime-300"
+            aria-label="X (Twitter)"
+            className="flex items-center hover:text-lime-300"
           >
-            @_Quivertrade
+            <XIcon />
           </a>
         </div>
         <div className="text-center">
