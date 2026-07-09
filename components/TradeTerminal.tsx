@@ -210,15 +210,15 @@ export function TradeTerminal() {
         <div className="border-b border-white/10 px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
           Markets
         </div>
-        <ul>
+        <ul className="flex overflow-x-auto lg:block">
           {MARKETS.map((m) => {
             const active = m.key === selected;
             const chg = dayStats(m, marks[m.key]).changePct;
             return (
-              <li key={m.key}>
+              <li key={m.key} className="min-w-[130px] flex-1 lg:min-w-0">
                 <button
                   onClick={() => setSelected(m.key)}
-                  className={`flex w-full items-center justify-between px-3 py-2.5 text-left hover:bg-white/5 ${
+                  className={`flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left hover:bg-white/5 ${
                     active ? "bg-white/5" : ""
                   }`}
                 >
@@ -280,7 +280,7 @@ export function TradeTerminal() {
               tone={funding >= 0 ? "up" : "down"}
             />
           </div>
-          <div className="h-64">
+          <div className="h-56 sm:h-64">
             <Chart candles={candles} mark={mark} />
           </div>
         </div>
