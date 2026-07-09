@@ -508,7 +508,7 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
 
         {/* tabbed panel */}
         <div className="rounded-lg border border-white/10 bg-[#110e08]">
-          <div className="flex items-center gap-1 border-b border-white/10 px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider">
+          <div className="flex items-center gap-1 overflow-x-auto whitespace-nowrap border-b border-white/10 px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider">
             {(
               [
                 ["positions", `Positions (${positions.length})`],
@@ -868,28 +868,29 @@ export function TradeTerminal({ initialMarket }: { initialMarket?: MarketKey }) 
               </div>
             </div>
           )}
-          <div className="mb-3 grid grid-cols-4 gap-2 rounded-md bg-black/30 p-2 text-center">
-            <div>
-              <div className="font-mono text-xs text-white">${fmtUsd(equity)}</div>
-              <div className="text-[9px] uppercase text-neutral-600">Equity</div>
+          <div className="mb-3 space-y-1.5 rounded-md bg-black/30 p-2.5 text-[11px]">
+            <div className="flex justify-between">
+              <span className="text-neutral-500">Equity</span>
+              <span className="font-mono text-white">${fmtUsd(equity)}</span>
             </div>
-            <div>
-              <div className="font-mono text-xs text-white">${fmtUsd(balance)}</div>
-              <div className="text-[9px] uppercase text-neutral-600">Free</div>
+            <div className="flex justify-between">
+              <span className="text-neutral-500">Free balance</span>
+              <span className="font-mono text-white">${fmtUsd(balance)}</span>
             </div>
-            <div>
-              <div className="font-mono text-xs text-white">${fmtUsd(usedMargin)}</div>
-              <div className="text-[9px] uppercase text-neutral-600">Used</div>
+            <div className="flex justify-between">
+              <span className="text-neutral-500">Margin used</span>
+              <span className="font-mono text-white">${fmtUsd(usedMargin)}</span>
             </div>
-            <div>
-              <div className="font-mono text-xs text-lime-300">
+            <div className="flex justify-between border-t border-white/5 pt-1.5">
+              <a
+                href="/leaderboard"
+                className="text-neutral-500 hover:text-lime-300"
+              >
+                Points ↗
+              </a>
+              <span className="font-mono text-lime-300">
                 {fmtUsd(points, 0)}
-              </div>
-              <div className="text-[9px] uppercase text-neutral-600">
-                <a href="/leaderboard" className="hover:text-lime-300">
-                  Points ↗
-                </a>
-              </div>
+              </span>
             </div>
           </div>
 
