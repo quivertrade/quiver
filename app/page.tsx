@@ -190,8 +190,20 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Lime artwork panel */}
-          <div className="relative mt-14 overflow-hidden bg-gradient-to-br from-lime-300 via-[#d8ff33] to-[#9fc700]">
+          {/* Hero artwork */}
+          <div className="mt-14">
+            <Image
+              src="/brand/hero-archers.jpg"
+              alt="Archers in Sherwood forest — lime duotone artwork"
+              width={1536}
+              height={1024}
+              priority
+              className="h-[260px] w-full object-cover sm:h-[420px]"
+            />
+          </div>
+
+          {/* Lime stats panel */}
+          <div className="relative overflow-hidden bg-gradient-to-br from-lime-300 via-[#d8ff33] to-[#9fc700]">
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0 opacity-[0.16]"
@@ -336,6 +348,30 @@ export default async function Home() {
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Full-bleed artwork */}
+      <section className="mx-auto max-w-6xl px-4 pb-6">
+        <div className="relative overflow-hidden">
+          <Image
+            src="/brand/quiver-3d.jpg"
+            alt="Quiver with arrows on lime background"
+            width={1536}
+            height={1024}
+            className="h-[280px] w-full object-cover sm:h-[460px]"
+          />
+          <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-black/85 px-6 py-4">
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-lime-300">
+              ➳ Every market, one quiver
+            </span>
+            <Link
+              href="/trade"
+              className="hidden text-[11px] font-bold uppercase tracking-wider text-white hover:text-lime-300 sm:block"
+            >
+              Start trading →
+            </Link>
           </div>
         </div>
       </section>
