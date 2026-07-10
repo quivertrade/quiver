@@ -90,9 +90,16 @@ Optional env: `KEEPER_PRIVATE_KEY` (index price pusher), `NEXT_PUBLIC_WC_PROJECT
 
 ## Links
 
-- Live app: https://quiver-trade.com
-- Docs: https://quiver-trade.com/docs
-- Announcement article: [`public/marketing/announcement-article.md`](public/marketing/announcement-article.md)
-- Brand assets: [`public/brand/`](public/brand/)
+| | |
+| --- | --- |
+| 🌐 App | [quiver-trade.com](https://quiver-trade.com) |
+| 📖 Docs | [quiver-trade.com/docs](https://quiver-trade.com/docs) |
+| 🗺 Roadmap | [quiver-trade.com/roadmap](https://quiver-trade.com/roadmap) |
+| 🪙 $QVR | [quiver-trade.com/token](https://quiver-trade.com/token) |
+| 🏆 Leaderboard | [quiver-trade.com/leaderboard](https://quiver-trade.com/leaderboard) |
+| 𝕏 Twitter | [@_Quivertrade](https://x.com/_Quivertrade) |
+| 🔎 Explorer | [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
+| 📰 Announcement | [`public/marketing/announcement-article.md`](public/marketing/announcement-article.md) |
+| 🎨 Brand assets | [`public/brand/`](public/brand/) |
 
 *Every market, one quiver.* 🏹
