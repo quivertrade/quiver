@@ -2,11 +2,18 @@
   <img src="public/brand/x-banner-archer-1500x500.jpg" alt="Quiver" width="100%" />
 </p>
 
-# Quiver 🏹
+<h1 align="center">Quiver</h1>
 
-**Perpetual futures on tokenized stocks — fully on-chain, live on [Robinhood Chain](https://explorer.testnet.chain.robinhood.com) testnet.**
+<p align="center"><b>Perpetual futures on tokenized stocks — fully on-chain, live on Robinhood Chain testnet.</b></p>
 
-🔗 **https://quiver-trade.com** · 𝕏 [@_Quivertrade](https://x.com/_Quivertrade) · 📖 [Docs](https://quiver-trade.com/docs) · 🗺 [Roadmap](https://quiver-trade.com/roadmap) · 🪙 [$QVR](https://quiver-trade.com/token)
+<p align="center">
+  <a href="https://quiver-trade.com"><img src="https://img.shields.io/badge/App-quiver--trade.com-CCFF00?style=flat-square&labelColor=000000" alt="App"></a>
+  <a href="https://quiver-trade.com/docs"><img src="https://img.shields.io/badge/Docs-read-CCFF00?style=flat-square&labelColor=000000" alt="Docs"></a>
+  <a href="https://quiver-trade.com/roadmap"><img src="https://img.shields.io/badge/Roadmap-view-CCFF00?style=flat-square&labelColor=000000" alt="Roadmap"></a>
+  <a href="https://quiver-trade.com/token"><img src="https://img.shields.io/badge/%24QVR-token-CCFF00?style=flat-square&labelColor=000000" alt="$QVR"></a>
+  <a href="https://quiver-trade.com/leaderboard"><img src="https://img.shields.io/badge/Points-leaderboard-CCFF00?style=flat-square&labelColor=000000" alt="Leaderboard"></a>
+  <a href="https://x.com/_Quivertrade"><img src="https://img.shields.io/badge/%F0%9D%95%8F-%40__Quivertrade-CCFF00?style=flat-square&labelColor=000000" alt="X"></a>
+</p>
 
 Long or short **AAPL, TSLA, NVDA, MSFT, AMZN and HOOD** with up to **20x leverage, 24/7**. Every open, close and liquidation settles on-chain through Quiver's vAMM perpetuals contract.
 
@@ -16,10 +23,10 @@ Long or short **AAPL, TSLA, NVDA, MSFT, AMZN and HOOD** with up to **20x leverag
 
 Stock markets close at 4pm, gate leverage, and make shorting hard. Tokenized equities put stocks on-chain — Quiver adds the derivatives layer:
 
-- ⏰ **24/7 markets** — trade nights, weekends, holidays
-- 📉 **Long or short in one click** — no borrow, no locate, no broker approval
-- ⚡ **Up to 20x leverage** with isolated margin per position
-- 🔗 **On-chain settlement** — verifiable on Robinhood Chain
+- **24/7 markets** — trade nights, weekends, holidays
+- **Long or short in one click** — no borrow, no locate, no broker approval
+- **Up to 20x leverage** with isolated margin per position
+- **On-chain settlement** — verifiable on Robinhood Chain
 
 ## Screenshots
 
@@ -90,16 +97,10 @@ Optional env: `KEEPER_PRIVATE_KEY` (index price pusher), `NEXT_PUBLIC_WC_PROJECT
 
 ## Links
 
-| | |
-| --- | --- |
-| 🌐 App | [quiver-trade.com](https://quiver-trade.com) |
-| 📖 Docs | [quiver-trade.com/docs](https://quiver-trade.com/docs) |
-| 🗺 Roadmap | [quiver-trade.com/roadmap](https://quiver-trade.com/roadmap) |
-| 🪙 $QVR | [quiver-trade.com/token](https://quiver-trade.com/token) |
-| 🏆 Leaderboard | [quiver-trade.com/leaderboard](https://quiver-trade.com/leaderboard) |
-| 𝕏 Twitter | [@_Quivertrade](https://x.com/_Quivertrade) |
-| 🔎 Explorer | [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) |
-| 📰 Announcement | [`public/marketing/announcement-article.md`](public/marketing/announcement-article.md) |
-| 🎨 Brand assets | [`public/brand/`](public/brand/) |
+**App** [quiver-trade.com](https://quiver-trade.com) · **Docs** [/docs](https://quiver-trade.com/docs) · **Roadmap** [/roadmap](https://quiver-trade.com/roadmap) · **$QVR** [/token](https://quiver-trade.com/token) · **Leaderboard** [/leaderboard](https://quiver-trade.com/leaderboard)
 
-*Every market, one quiver.* 🏹
+**X** [@_Quivertrade](https://x.com/_Quivertrade) · **Explorer** [explorer.testnet.chain.robinhood.com](https://explorer.testnet.chain.robinhood.com) · **Announcement** [article](public/marketing/announcement-article.md) · **Brand** [public/brand](public/brand/)
+
+---
+
+<p align="center"><i>Every market, one quiver.</i> 🏹</p>
