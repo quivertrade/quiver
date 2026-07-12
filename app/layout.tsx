@@ -33,6 +33,10 @@ export const metadata: Metadata = {
   icons: {
     apple: "/brand/icon-192.png",
   },
+  other: {
+    "virtual-protocol-site-verification":
+      "ebdbea5ec4e52d9c9374109f9b60f57b",
+  },
 };
 
 export const viewport: Viewport = {
